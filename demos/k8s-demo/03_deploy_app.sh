@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 
 . ./utils.sh
+repo_root="$(git rev-parse --show-toplevel)"
+
+echo ">>--- Install Secretless Broker Configuration Resource Definition"
+kubectl create \
+    -f ${repo_root}/resource-definitions/secretless-resource-definition.yaml
 
 # store Secretless config
 echo ">>--- Create and store Secretless configuration"
 
 kubectl --namespace quick-start-application-ns \
- create configmap \
- quick-start-application-secretless-config \
- --from-file=etc/secretless.yml
+    create -f etc/sbconfig.yml
 
 # start application
 echo ">>--- Start application"
