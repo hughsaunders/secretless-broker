@@ -2,9 +2,18 @@
 
 . ./utils.sh
 
+# Deploy sidecar injector
+# This should really be a step inbetween 2 and 3.
+echo ">>--- Deploy Sidecar Injector"
+kubectl --namespace kube-system \
+    apply -R -f tumblr-sidecar-injection
+
 # store Secretless config
 echo ">>--- Create and store Secretless configuration"
 
+kubectl --namespace quick-start-application-ns \
+    delete configmap/quick-start-application-secretless-config \
+    --ignore-not-found=true
 kubectl --namespace quick-start-application-ns \
  create configmap \
  quick-start-application-secretless-config \

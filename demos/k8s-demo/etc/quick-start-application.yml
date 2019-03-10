@@ -6,7 +6,7 @@ metadata:
   labels:
     app: quick-start-application
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: quick-start-application
@@ -14,6 +14,8 @@ spec:
     metadata:
       labels:
         app: quick-start-application
+      annotations:
+        injector.tumblr.com/request: sb-sidecar
     spec:
       serviceAccountName: quick-start-application
       containers:
@@ -30,18 +32,6 @@ spec:
             port: 8080
           initialDelaySeconds: 3
           periodSeconds: 5
-      - name: secretless
-        image: cyberark/secretless-broker:latest
-        imagePullPolicy: IfNotPresent
-        args: ["-f", "/etc/secretless/secretless.yml"]
-        volumeMounts:
-        - name: config
-          mountPath: /etc/secretless
-          readOnly: true
-      volumes:
-      - name: config
-        configMap:
-          name: quick-start-application-secretless-config
 
 ---
 kind: Service
