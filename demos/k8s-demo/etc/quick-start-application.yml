@@ -14,6 +14,10 @@ spec:
     metadata:
       labels:
         app: quick-start-application
+      annotations:
+        sidecar-injector.cyberark.com/inject: "yes"
+        sidecar-injector.cyberark.com/secretlessConfig: "quick-start-application-secretless-config"
+        sidecar-injector.cyberark.com/injectType: "secretless"
     spec:
       serviceAccountName: quick-start-application
       containers:
@@ -30,18 +34,6 @@ spec:
             port: 8080
           initialDelaySeconds: 3
           periodSeconds: 5
-      - name: secretless
-        image: cyberark/secretless-broker:latest
-        imagePullPolicy: IfNotPresent
-        args: ["-f", "/etc/secretless/secretless.yml"]
-        volumeMounts:
-        - name: config
-          mountPath: /etc/secretless
-          readOnly: true
-      volumes:
-      - name: config
-        configMap:
-          name: quick-start-application-secretless-config
 
 ---
 kind: Service

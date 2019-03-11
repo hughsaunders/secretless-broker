@@ -2,9 +2,20 @@
 
 . ./utils.sh
 
+echo ">>--- Deploying Sidecar Injection service"
+./sidecar-injection/deploy-sci.sh
+
+echo ">>--- Labeling Namespace for Sidecar Injection"
+kubectl label \
+  namespace quick-start-application-ns \
+  cyberark-sidecar-injector=enabled
+
 # store Secretless config
 echo ">>--- Create and store Secretless configuration"
 
+kubectl --namespace quick-start-application-ns \
+    delete configmap/quick-start-application-secretless-config \
+    --ignore-not-found=true
 kubectl --namespace quick-start-application-ns \
  create configmap \
  quick-start-application-secretless-config \
