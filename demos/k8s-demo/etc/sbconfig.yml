@@ -1,0 +1,23 @@
+apiVersion: "secretless.io/v1"
+kind: Configuration
+metadata:
+  name: quick-start-secretless-config
+spec:
+  listeners:
+    - name: pg
+      protocol: pg
+      address: localhost:5432
+
+  handlers:
+    - name: pg
+      listener: pg
+      credentials:
+        - name: address
+          provider: kubernetes
+          id: quick-start-backend-credentials#address
+        - name: username
+          provider: kubernetes
+          id: quick-start-backend-credentials#username
+        - name: password
+          provider: kubernetes
+          id: quick-start-backend-credentials#password

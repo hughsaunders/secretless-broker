@@ -37,6 +37,13 @@ while [[ $(kubectl get namespace quick-start-application-ns 2>/dev/null) ]] ; do
   echo "Waiting for quick-start-application-ns namespace clean up"
   sleep 5
 done
+
+	# Remove non-namespaced resources
+echo ">>--- Clean up cluster scoped resources"
+kubectl delete ClusterRole/secretless-crd-role --ignore-not-found=true
+kubectl delete ClusterRoleBinding/quick-start-use-secretless-crd
+
+echo ">>--- Create application namespace"
 kubectl create namespace quick-start-application-ns
 
 echo Ready!
@@ -60,3 +67,10 @@ kubectl --namespace quick-start-application-ns \
 kubectl --namespace quick-start-application-ns \
  create \
  -f etc/quick-start-application-entitlements.yml
+
+# Create the secretless-crd-role and grant it to
+# the application service account. This allows
+# the secretless broker to manage sbconfig objects.
+kubectl --namespace quick-start-application-ns \
+  create \
+  -f etc/crd-entitlements.yml

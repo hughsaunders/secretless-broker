@@ -16,7 +16,7 @@ spec:
         app: quick-start-application
       annotations:
         sidecar-injector.cyberark.com/inject: "yes"
-        sidecar-injector.cyberark.com/secretlessConfig: "quick-start-application-secretless-config"
+        sidecar-injector.cyberark.com/secretlessConfig: "k8s/crd#quick-start-secretless-config"
         sidecar-injector.cyberark.com/injectType: "secretless"
     spec:
       serviceAccountName: quick-start-application
